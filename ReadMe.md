@@ -1,5 +1,5 @@
 
-### 🔧 Setup and Run
+#  Setup and Run
 
 ```bash
 # 1. Clone the repo
@@ -12,7 +12,7 @@ cd chatbot
 podman build -t streamlit-chatbot .
 ```
 
-# 2. Run the container
+#  Run the container
 
 ```bash
 podman run -p 8501:8501 streamlit-chatbot
@@ -21,9 +21,9 @@ podman run -p 8501:8501 streamlit-chatbot
 Then open:
 👉 http://localhost:8501
 
-⚙️ API Setup
+API Setup
 Use the sidebar in the app to enter:
 
 API URL (e.g. https://api.myendpoint.com/v1/chat/completions)
 API Key (e.g. sk-xxxx)
-Model Name (e.g. gpt-3.5-turbo, inference-granite-33-8b)
+Model Name (e.g. inference-granite-33-8b)
