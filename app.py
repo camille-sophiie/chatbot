@@ -5,7 +5,7 @@ import json
 # Page configuration
 st.set_page_config(
     page_title="Model Chat Interface",
-    page_icon="🤖",
+    page_icon="💬",
     layout="wide"
 )
 
