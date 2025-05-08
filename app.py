@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🤖 Model Chat Interface test")
+st.title(" Model Chat Interface ")
 
 # Initialize session state for chat history
 if "messages" not in st.session_state:
