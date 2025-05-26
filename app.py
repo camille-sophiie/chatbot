@@ -3,7 +3,7 @@ import requests
 
 # Page setup
 st.set_page_config(page_title="AI Model Interface", page_icon="🤖", layout="wide")
-st.title("🤖 Universal AI Model Chat & Inference Interface")
+st.title("AI Model Chat")
 
 # Session state
 if "messages" not in st.session_state:
@@ -63,7 +63,7 @@ with st.sidebar:
     st.caption("Supports chat, embeddings, multimodal, and more.")
 
 # Function to call relevant API based on model type
-def call_model_api(prompt):
+def call_model_api(prompt, image_url=None):
     model = st.session_state.selected_model
     model_type = st.session_state.selected_model_type
     headers = {
@@ -89,16 +89,15 @@ def call_model_api(prompt):
 
     elif model_type == "multimodal":
         endpoint = f"{api_base.rstrip('/')}/v1/chat/completions"
+        content = [{"type": "text", "text": prompt}]
+        if image_url:
+            content.append({"type": "image_url", "image_url": {"url": image_url}})
         payload = {
             "model": model,
             "messages": [
                 {
                     "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt},
-                        # You can add an image block here if needed
-                        # {"type": "image_url", "image_url": {"url": "https://your-image-url"}}
-                    ]
+                    "content": content
                 }
             ],
             "temperature": temperature
@@ -126,14 +125,23 @@ if st.session_state.model_confirmed:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
+        image_url = None
+        if model_type == "multimodal":
+            image_url = st.text_input("Image URL (optional)")
+
+            if image_url:
+                st.image(image_url, caption="Preview", width=200)
+
         if prompt := st.chat_input("Enter your message..."):
             st.session_state.messages.append({"role": "user", "content": prompt})
             with st.chat_message("user"):
                 st.markdown(prompt)
+                if image_url:
+                    st.image(image_url, width=100)
 
             with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
-                    response = call_model_api(prompt)
+                    response = call_model_api(prompt, image_url=image_url)
                     if isinstance(response, dict):
                         try:
                             content = response["choices"][0]["message"]["content"]
